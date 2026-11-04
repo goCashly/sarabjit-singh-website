@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { brand } from '@/lib/brand';
+import { serviceAreas } from '@/lib/serviceAreas';
 import NavBar from '@/components/NavBar';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import './globals.css';
@@ -36,14 +37,51 @@ const editorial = localFont({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(brand.siteUrl),
   title: `${brand.name} — ${brand.title}`,
   description: brand.aboutIntro,
+  keywords: [
+    'mortgage broker',
+    'mortgage advisor',
+    brand.name,
+    ...serviceAreas.map((area) => `mortgage broker ${area.city}`),
+  ],
+  alternates: { canonical: brand.siteUrl },
+  openGraph: {
+    siteName: brand.name,
+    locale: 'en_CA',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary',
+  },
+};
+
+const personJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FinancialService',
+  name: brand.fullName,
+  description: brand.aboutIntro,
+  url: brand.siteUrl,
+  telephone: brand.phone,
+  email: brand.email,
+  image: `${brand.siteUrl}/photos/hero-portrait.png`,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: brand.officeAddress,
+    addressRegion: 'ON',
+    addressCountry: 'CA',
+  },
+  areaServed: serviceAreas.map((area) => ({ '@type': 'City', name: area.city })),
+  founder: { '@type': 'Person', name: brand.name, jobTitle: brand.title },
+  sameAs: [brand.linkedin, `https://www.instagram.com/${brand.instagram.replace('@', '')}/`],
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={`${display.variable} ${body.variable} ${editorial.variable}`}>
       <body>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }} />
         <NavBar />
         {children}
         <WhatsAppButton />

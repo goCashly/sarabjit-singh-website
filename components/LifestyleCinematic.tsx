@@ -436,7 +436,7 @@ export default function LifestyleCinematic() {
         .lc-intro { padding: clamp(96px, 14vh, 150px) var(--edge); display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 6vw; align-items: center; border-top: 1px solid var(--line); }
         .lc-intro-image {
           position: relative; overflow: hidden; background: var(--panel); line-height: 0;
-          box-shadow: 0 25px 80px rgba(0,0,0,0.5); border: 1px solid var(--line);
+          box-shadow: 0 25px 80px rgba(0,0,0,0.5);
         }
         .lc-intro-image img, .lc-intro-image video { display: block; width: 100%; height: auto; max-height: 78vh; object-fit: contain; margin: 0 auto; }
         .lc-intro-h2 { font-family: var(--font-editorial); font-weight: 400; font-style: italic; font-size: clamp(2.25rem, 5vw, 4.25rem); line-height: 1.04; margin: 18px 0; }

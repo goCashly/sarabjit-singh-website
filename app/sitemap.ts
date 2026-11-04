@@ -2,9 +2,19 @@ import type { MetadataRoute } from 'next';
 import { brand } from '@/lib/brand';
 import { posts } from '@/lib/posts';
 import { mortgageServices } from '@/lib/mortgageServices';
+import { serviceAreas } from '@/lib/serviceAreas';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = ['', '/lifestyle', '/my-journey', '/blogs', '/mortgage-guide', '/mortgage-services'].map((path) => ({
+  const staticRoutes = [
+    '',
+    '/lifestyle',
+    '/my-journey',
+    '/partner-program',
+    '/blogs',
+    '/mortgage-guide',
+    '/mortgage-services',
+    '/areas-we-serve',
+  ].map((path) => ({
     url: `${brand.siteUrl}${path}`,
     lastModified: new Date(),
   }));
@@ -19,5 +29,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(),
   }));
 
-  return [...staticRoutes, ...postRoutes, ...serviceRoutes];
+  const areaRoutes = serviceAreas.map((area) => ({
+    url: `${brand.siteUrl}/areas-we-serve/${area.slug}`,
+    lastModified: new Date(),
+  }));
+
+  return [...staticRoutes, ...postRoutes, ...serviceRoutes, ...areaRoutes];
 }

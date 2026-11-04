@@ -45,7 +45,22 @@ export default function MortgageServices3D() {
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
     const scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(0x051a5e, 0.014);
-    const camera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight, 0.1, 500);
+
+    // Narrow (portrait/mobile) viewports crop the ring of islands down to a
+    // sliver of the one in focus. Widen the FOV and pull the camera back so
+    // the full scene reads as a wide, immersive view instead of a tight crop.
+    function computeCamParams() {
+      const aspect = window.innerWidth / window.innerHeight;
+      const portrait = aspect < 0.8;
+      return {
+        fov: portrait ? 62 : 38,
+        radius: portrait ? 47 : 37,
+        height: portrait ? 25 : 19,
+      };
+    }
+    let camParams = computeCamParams();
+
+    const camera = new THREE.PerspectiveCamera(camParams.fov, window.innerWidth / window.innerHeight, 0.1, 500);
     camera.position.set(0, 25, 49);
     camera.lookAt(0, 0, 0);
 
@@ -300,7 +315,7 @@ export default function MortgageServices3D() {
       smoothed += (target - smoothed) * 0.055;
       const angle = (smoothed * Math.PI) / 4;
       const bob = reduced ? 0 : Math.sin(now * 0.0003) * 0.35;
-      camera.position.set(Math.sin(angle) * 37, 19 + bob, Math.cos(angle) * 37);
+      camera.position.set(Math.sin(angle) * camParams.radius, camParams.height + bob, Math.cos(angle) * camParams.radius);
       camera.lookAt(Math.sin(angle) * 10, 1.5, Math.cos(angle) * 10);
       islands.forEach(({ focusRing }, i) => {
         const delta = Math.abs(i - smoothed);
@@ -310,6 +325,8 @@ export default function MortgageServices3D() {
     }
 
     function handleResize() {
+      camParams = computeCamParams();
+      camera.fov = camParams.fov;
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
@@ -438,12 +455,26 @@ export default function MortgageServices3D() {
         .m3d-hint { position: absolute; right: 25px; top: 50%; z-index: 7; writing-mode: vertical-rl; letter-spacing: 0.22em; font-size: 0.625rem; color: var(--gold); margin: 0; }
 
         @media (max-width: 700px) {
-          .m3d-head { top: 34%; }
-          .m3d-focus { bottom: 20%; padding: 15px; }
-          .m3d-nav { bottom: 2%; overflow-x: auto; justify-content: flex-start; padding-bottom: 4px; }
+          .m3d-head { top: 22%; padding: 0 16px; }
+          .m3d-h1 { margin: 10px 0; }
+          .m3d-arrows { bottom: 41%; padding: 0 12px; }
+          .m3d-focus { bottom: 23%; width: min(340px, 88vw); padding: 16px 18px 18px; }
+          .m3d-focus-p { margin: 0 auto 13px; }
+          .m3d-cta { padding: 9px 20px; }
+          .m3d-nav {
+            bottom: max(10px, env(safe-area-inset-bottom));
+            overflow-x: auto;
+            justify-content: flex-start;
+            padding-bottom: 4px;
+            -webkit-overflow-scrolling: touch;
+          }
           .m3d-nav button { min-width: 86px; flex: none; font-size: 0.5625rem; }
-          .m3d-arrows { bottom: 44%; padding: 0 12px; }
           .m3d-hint { display: none; }
+        }
+
+        @media (max-width: 400px) {
+          .m3d-head { top: 19%; }
+          .m3d-focus { bottom: 25%; padding: 14px 16px 16px; }
         }
       `}</style>
     </div>

@@ -10,7 +10,7 @@ import TopDock from './TopDock';
 const links = [
   { href: '/mortgage-guide', label: 'Mortgage Guide' },
   { href: '/lifestyle', label: 'Lifestyle' },
-  { href: '/#loyalty', label: 'Partner Program' },
+  { href: '/partner-program', label: 'Partner Program' },
   { href: '/my-journey', label: 'My Journey' },
   { href: '/blogs', label: 'Blogs' },
 ];

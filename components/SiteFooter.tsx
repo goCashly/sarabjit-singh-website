@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { brand } from '@/lib/brand';
+import { serviceAreas } from '@/lib/serviceAreas';
 
 const exploreLinks = [
   { href: '/mortgage-services', label: 'Mortgage Services' },
@@ -110,8 +111,14 @@ export default function SiteFooter() {
           <p>{brand.license}</p>
           <p>{brand.officeAddress}</p>
           <p style={{ marginTop: 4 }}>
-            <a href={`tel:+1${brand.phone.replace(/\D/g, '')}`} className="footer-link" style={{ color: 'var(--paper-dim)', textDecoration: 'none' }}>
-              {brand.phone}
+            <a
+              href={`https://wa.me/${brand.whatsapp.replace(/\D/g, '')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer-link"
+              style={{ color: 'var(--paper-dim)', textDecoration: 'none' }}
+            >
+              {brand.whatsapp}
             </a>
             {' · '}
             <a href={`mailto:${brand.email}`} className="footer-link" style={{ color: 'var(--paper-dim)', textDecoration: 'none' }}>
@@ -121,11 +128,22 @@ export default function SiteFooter() {
         </div>
 
         <div className="footer-col">
-          <p style={{ color: 'var(--steel)', fontSize: '0.75rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+          <Link
+            href="/areas-we-serve"
+            className="footer-link"
+            style={{ color: 'var(--steel)', fontSize: '0.75rem', letterSpacing: '0.1em', textTransform: 'uppercase', textDecoration: 'none' }}
+          >
             Areas Served
-          </p>
+          </Link>
           <p style={{ marginTop: 8, color: 'var(--paper-dim)', fontSize: '0.8125rem', lineHeight: 1.8 }}>
-            {brand.serviceAreas.join(' · ')}
+            {serviceAreas.map((area, i) => (
+              <span key={area.slug}>
+                {i > 0 && ' · '}
+                <Link href={`/areas-we-serve/${area.slug}`} className="footer-link" style={{ color: 'var(--paper-dim)', textDecoration: 'none' }}>
+                  {area.city}
+                </Link>
+              </span>
+            ))}
           </p>
         </div>
       </div>

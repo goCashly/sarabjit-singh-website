@@ -50,7 +50,7 @@ const ITEMS = [
     ),
   },
   {
-    href: '/#loyalty',
+    href: '/partner-program',
     label: 'Partner Program',
     icon: (
       <>

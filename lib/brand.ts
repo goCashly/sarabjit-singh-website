@@ -3,7 +3,7 @@ export const brand = {
   // canonical URLs, Open Graph tags, the sitemap and JSON-LD.
   siteUrl: 'https://www.sabbiesandhu.ca',
   name: 'Sarabjit Singh',
-  fullName: 'Sarabjit Singh Sandhu',
+  fullName: 'Sarabjit Singh',
   title: 'Senior Mortgage Specialist',
   seoHeading: 'Sarabjit Singh — Senior Mortgage Specialist serving Mississauga, Oakville & the Greater Toronto Area',
   company: 'Mortgage Alliance',
@@ -13,23 +13,11 @@ export const brand = {
   officeAddress: 'Unit 1, 2483 Burnhamthorpe Rd W, Oakville, ON L6M 4H1',
   email: 'Sarabjits@mortgagealliance.com',
   phone: '905-609-1818',
-  whatsapp: '+1 (289) 246-0922',
+  whatsapp: '+1 (905) 609-1818',
   applicationUrl: 'https://www.mortgagealliance.com/mortgage-broker/SarabjitSingh/?selectedProvince=ON',
   instagram: '@sabbie_sandhu',
   linkedin: 'https://www.linkedin.com/in/sarabjit-singh-98a44620/',
   languages: ['English', 'Punjabi', 'Hindi', 'Urdu'],
-
-  serviceAreas: [
-    'Mississauga',
-    'Oakville',
-    'Burlington',
-    'Milton',
-    'Brampton',
-    'Hamilton',
-    'Vaughan',
-    'Richmond Hill',
-    'Markham',
-  ],
 
   entranceEyebrow: 'A DECADE AT THE TOP',
   entranceLine: 'THE SARABJIT SINGH STORY',
@@ -44,12 +32,12 @@ export const brand = {
     {
       eyebrow: "Chairman's Roundtable Award Recipient From 2015",
       heading: '$4B+ Closed · Top 1%',
-      body: 'Funded residential & commercial, Canada-wide — from first-time buyers to seasoned investors across the GTA.',
+      body: 'Residential & Commercial, Canada-wide\nfirst-time buyers to seasoned investors.',
     },
     {
       eyebrow: "Let's Talk",
       heading: 'Book Your Call',
-      body: 'No pressure, no obligation — just a straight answer on your best option.',
+      body: 'No Pressure, No Obligation\njust a straight answer on your best option.',
       cta: true,
     },
   ],
@@ -263,7 +251,7 @@ export const brand = {
   ],
 
   guideEyebrow: 'Mortgage Guide',
-  guideHeading: 'Every path to the keys.',
+  guideHeading: 'Every Path to the Finance.',
   guideIntro:
     "Whatever stage you're at — first purchase, renewal, refinance, or something more complex — here's where to start, and what I'll ask for first.",
 
@@ -414,7 +402,7 @@ export const brand = {
   contactIntro: 'For press, partnerships, or a file that needs someone who picks up.',
 
   pullQuote: {
-    line: 'Always on top, Back for more!',
+    line: 'Always on top. Back for more!',
     attribution: '— The Sarabjit Singh Story',
   },
 
@@ -436,7 +424,7 @@ export const brand = {
     {
       year: '2025',
       kicker: 'Chapter III / One call',
-      body: 'Takes one call, as a favor. Closes it in three days.',
+      body: 'Takes one call, as a favour. Closes it in three days.',
       detail: 'A single conversation becomes the spark for what comes next.',
     },
     {
@@ -453,7 +441,7 @@ export const brand = {
     { year: '2017', image: '/photos/journey/2017.jpg', label: "2017 — Chairman's Roundtable" },
     { year: '2018', image: '/photos/journey/2018.jpg', label: "2018 — Chairman's Roundtable" },
     { year: '2019', image: '/photos/journey/2019.jpg', label: "2019 — Chairman's Roundtable" },
-    { year: '2020', image: '/photos/journey/2020.jpg', label: "2020 — Chairperson's Roundtable" },
+    { year: '2020', image: '/photos/journey/2020.jpg', label: "2020 — Chairman's Roundtable" },
     { year: '2022', image: '/photos/journey/2022.jpg', label: '2022 — Mortgage Specialist Recognition' },
   ],
 
@@ -474,7 +462,7 @@ export const brand = {
       ],
     },
     {
-      tier: 'Platinum',
+      tier: 'Silver',
       unlock: '3 referrals sent my way',
       perks: [
         'Everything in Gold',
@@ -486,7 +474,7 @@ export const brand = {
       tier: 'Diamond',
       unlock: '5+ referrals sent my way',
       perks: [
-        'Everything in Platinum',
+        'Everything in Silver',
         'First call for reciprocal referrals — top of the list, not just on it',
         'An invite to the annual partner appreciation golf day',
         'A year-end call on how we can send each other more business',
@@ -499,8 +487,8 @@ export const brand = {
   blogsHeading: 'The Journal',
   blogsIntro: 'Short writing on the market, the comeback, and the life around both.',
 
-  footerTagline: 'Best Mortgage Broker in Canada',
-  footerStatLine: 'Top 1% Canada-wide · $4B+ funded in commercial & residential deals',
+  footerTagline: 'Best Mortgage Advisor in Canada',
+  footerStatLine: 'Top 1% Canada-wide · $4B+ funded in Residential & Commercial deals',
 } as const;
 
 export type LoanType =

@@ -40,7 +40,7 @@ export const posts: Post[] = [
     readTime: '4 min read',
     body: [
       p(
-        "The first file back wasn't supposed to be a big one. A favor for a former client, a straightforward pre-approval, nothing that should have tested a process I hadn't run in five years. It tested it anyway."
+        "The first file back wasn't supposed to be a big one. A favour for a former client, a straightforward pre-approval, nothing that should have tested a process I hadn't run in five years. It tested it anyway."
       ),
       p(
         "Day nine is where it nearly came apart — a financing condition that should have been routine, caught late, with a closing date that wasn't moving. The old instincts were still there; what had changed was how calmly I trusted them."

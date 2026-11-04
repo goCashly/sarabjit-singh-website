@@ -1,73 +1,41 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { brand } from '@/lib/brand';
 import AnimatedButton from './AnimatedButton';
 
 const CHAPTERS = brand.heroChapters;
 const N = CHAPTERS.length;
+const INTERVAL_MS = 5500;
 
 export default function Hero() {
   const wrap = useRef<HTMLElement>(null);
-  const stage = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
-  const shade = useRef<HTMLDivElement>(null);
   const cue = useRef<HTMLDivElement>(null);
-  const bar = useRef<HTMLDivElement>(null);
-  const chapterRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const [current, setCurrent] = useState(0);
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
+    let reduced = false;
+    try {
+      reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    } catch {}
+    if (reduced || N <= 1) return;
 
-    const ctx = gsap.context(() => {
-      if (wrap.current) wrap.current.style.height = `${N * 76}vh`;
+    const id = setInterval(() => {
+      setCurrent((c) => (c + 1) % N);
+    }, INTERVAL_MS);
+    return () => clearInterval(id);
+  }, []);
 
-      const st = ScrollTrigger.create({
-        trigger: wrap.current,
-        start: 'top top',
-        end: 'bottom bottom',
-        pin: stage.current,
-        anticipatePin: 1,
-        onUpdate: (self: { progress: number }) => {
-          const p = self.progress;
-
-          if (video.current) {
-            video.current.style.transform = `scale(${1 + p * 0.07})`;
-          }
-          if (shade.current) {
-            shade.current.style.opacity = String(0.3 + p * 0.15);
-          }
-          if (bar.current) {
-            bar.current.style.width = `${p * 100}%`;
-          }
-          if (cue.current) {
-            cue.current.style.opacity = String(1 - Math.min(1, p / 0.06));
-          }
-
-          const t = Math.min(1, Math.max(0, (p - 0.04) / 0.96));
-          const raw = 0.5 + t * (N - 1);
-
-          chapterRefs.current.forEach((el, i) => {
-            if (!el) return;
-            const d = Math.abs(raw - (i + 0.5));
-            const opacity = Math.min(1, Math.max(0, 1 - Math.max(0, d - 0.03) / 0.5));
-            const y = (i + 0.5 - raw) * 20;
-            el.style.opacity = String(opacity);
-            el.style.transform = `translateY(${y}px)`;
-            el.style.pointerEvents = opacity > 0.5 ? 'auto' : 'none';
-          });
-        },
-      });
-
-      ScrollTrigger.refresh();
-
-      return () => st.kill();
-    }, wrap);
-
-    return () => {
-      ctx.revert();
+  useEffect(() => {
+    const el = cue.current;
+    if (!el) return;
+    const onScroll = () => {
+      el.style.opacity = window.scrollY > 40 ? '0' : '1';
     };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   useEffect(() => {
@@ -102,107 +70,135 @@ export default function Hero() {
       { threshold: 0.15 }
     );
 
+    // Chrome pauses muted, video-only autoplay elements "to save power" while a tab
+    // is backgrounded (e.g. phone locked, app switched away). Nothing else resumes
+    // it afterwards, so the hero would stay frozen on return without this.
+    const onVisibility = () => {
+      if (!document.hidden && v.paused) v.play().catch(() => {});
+    };
+
     v.addEventListener('timeupdate', onTimeUpdate);
+    v.addEventListener('ended', restart);
+    document.addEventListener('visibilitychange', onVisibility);
     io.observe(el);
 
     return () => {
       v.removeEventListener('timeupdate', onTimeUpdate);
+      v.removeEventListener('ended', restart);
+      document.removeEventListener('visibilitychange', onVisibility);
       io.disconnect();
     };
   }, []);
 
   return (
-    <section ref={wrap} style={{ position: 'relative', height: '100vh', background: 'var(--ink)' }}>
-      <div
-        ref={stage}
-        className="hero-stage"
-        style={{ height: '100vh', position: 'relative', overflow: 'hidden', background: 'var(--ink)' }}
-      >
-        <video
-          ref={video}
-          className="hero-video-bg"
-          src="/video/hero-entrance.mp4"
-          poster="/video/hero-entrance-poster.jpg"
-          aria-label={`${brand.name}, ${brand.title}`}
-          autoPlay
-          muted
-          playsInline
-          preload="auto"
-        />
-        <div ref={shade} className="hero-media-shade" style={{ opacity: 0.3 }} />
+    <section
+      ref={wrap}
+      className="hero-stage"
+      style={{ position: 'relative', height: '100vh', overflow: 'hidden', background: 'var(--ink)' }}
+    >
+      <video
+        ref={video}
+        className="hero-video-bg"
+        src="/video/hero-entrance.mp4"
+        poster="/video/hero-entrance-poster.jpg"
+        aria-label={`${brand.name}, ${brand.title}`}
+        autoPlay
+        muted
+        playsInline
+        preload="auto"
+      />
+      <div className="hero-media-shade" />
 
-        <div className="hero-copy-col">
-          <h1
-            style={{
-              position: 'absolute',
-              width: 1,
-              height: 1,
-              padding: 0,
-              margin: -1,
-              overflow: 'hidden',
-              clip: 'rect(0, 0, 0, 0)',
-              whiteSpace: 'nowrap',
-              border: 0,
-            }}
-          >
-            {brand.seoHeading}
-          </h1>
-          <div className="hero-copy-stack">
-            {CHAPTERS.map((c, i) => (
-              <div
-                key={c.heading}
-                ref={(el) => {
-                  chapterRefs.current[i] = el;
+      <div className="hero-copy-col">
+        <h1
+          style={{
+            position: 'absolute',
+            width: 1,
+            height: 1,
+            padding: 0,
+            margin: -1,
+            overflow: 'hidden',
+            clip: 'rect(0, 0, 0, 0)',
+            whiteSpace: 'nowrap',
+            border: 0,
+          }}
+        >
+          {brand.seoHeading}
+        </h1>
+        <div className="hero-copy-stack">
+          {CHAPTERS.map((c, i) => (
+            <div
+              key={c.heading}
+              className="hero-chapter"
+              style={{
+                opacity: i === current ? 1 : 0,
+                transform: i === current ? 'translateY(0)' : 'translateY(18px)',
+                pointerEvents: i === current ? 'auto' : 'none',
+              }}
+            >
+              <p
+                className="eyebrow"
+                style={{
+                  letterSpacing: '0.28em',
+                  textTransform: 'uppercase',
+                  fontSize: '0.75rem',
+                  fontWeight: 700,
+                  textShadow: '0 2px 12px rgba(0,0,0,0.85), 0 1px 2px rgba(0,0,0,0.9)',
                 }}
-                className="hero-chapter"
-                style={{ opacity: i === 0 ? 1 : 0 }}
               >
-                <p
-                  className="eyebrow"
-                  style={{
-                    letterSpacing: '0.28em',
-                    textTransform: 'uppercase',
-                    fontSize: '0.75rem',
-                    fontWeight: 700,
-                    textShadow: '0 2px 12px rgba(0,0,0,0.85), 0 1px 2px rgba(0,0,0,0.9)',
-                  }}
-                >
-                  {c.eyebrow}
-                </p>
-                <p className="hero-heading">{c.heading}</p>
-                <p
-                  style={{
-                    marginTop: 18,
-                    maxWidth: 460,
-                    color: 'var(--paper)',
-                    fontWeight: 600,
-                    fontSize: '1.0625rem',
-                    lineHeight: 1.6,
-                    textShadow: '0 2px 10px rgba(0,0,0,0.9), 0 1px 20px rgba(0,0,0,0.7)',
-                  }}
-                >
-                  {c.body}
-                </p>
-                {'cta' in c && c.cta && (
-                  <div style={{ marginTop: 28 }}>
-                    <AnimatedButton href="/#contact">Book Appointment</AnimatedButton>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+                {c.eyebrow}
+              </p>
+              <p className={`hero-heading${c.heading.length > 18 ? ' hero-heading--compact' : ''}`}>{c.heading}</p>
+              <p
+                style={{
+                  marginTop: 18,
+                  maxWidth: 460,
+                  color: 'var(--paper)',
+                  fontWeight: 600,
+                  fontSize: '1.0625rem',
+                  lineHeight: 1.6,
+                  textShadow: '0 2px 10px rgba(0,0,0,0.9), 0 1px 20px rgba(0,0,0,0.7)',
+                }}
+              >
+                {c.body.split('\n').map((line, idx) => (
+                  <Fragment key={idx}>
+                    {idx > 0 && <br />}
+                    {line}
+                  </Fragment>
+                ))}
+              </p>
+              {'cta' in c && c.cta && (
+                <div style={{ marginTop: 28 }}>
+                  <AnimatedButton href="/#contact">Book Appointment</AnimatedButton>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
+      </div>
 
-        <div ref={cue} className="hero-cue">
-          Scroll
-          <svg width="11" height="16" viewBox="0 0 11 16" fill="none" aria-hidden="true">
-            <path d="M5.5 0v14.5M1 10l4.5 4.5L10 10" stroke="currentColor" strokeWidth="1.3" />
-          </svg>
+      {N > 1 && (
+        <div className="hero-dots" aria-label="Hero messages">
+          {CHAPTERS.map((c, i) => (
+            <button
+              key={c.heading}
+              type="button"
+              aria-label={`Show message ${i + 1}: ${c.heading}`}
+              aria-current={i === current}
+              className={i === current ? 'active' : ''}
+              onClick={() => setCurrent(i)}
+            >
+              {i === current && <span key={current} className="hero-dot-fill" style={{ animationDuration: `${INTERVAL_MS}ms` }} />}
+            </button>
+          ))}
         </div>
+      )}
 
-        <div className="hero-progress-track">
-          <div ref={bar} className="hero-progress-bar" />
-        </div>
+      <div ref={cue} className="hero-cue">
+        Scroll
+        <svg width="11" height="16" viewBox="0 0 11 16" fill="none" aria-hidden="true">
+          <path d="M5.5 0v14.5M1 10l4.5 4.5L10 10" stroke="currentColor" strokeWidth="1.3" />
+        </svg>
       </div>
 
       <style>{`
@@ -214,7 +210,11 @@ export default function Hero() {
           object-fit: cover;
           object-position: center 38%;
           z-index: 1;
-          will-change: transform;
+          animation: hero-kenburns 24s ease-in-out infinite alternate;
+        }
+        @keyframes hero-kenburns {
+          0% { transform: scale(1); }
+          100% { transform: scale(1.08); }
         }
         .hero-media-shade {
           position: absolute;
@@ -228,10 +228,10 @@ export default function Hero() {
           z-index: 3;
           height: 100%;
           display: flex;
-          align-items: center;
+          align-items: flex-end;
           justify-content: center;
           text-align: center;
-          padding: 0 clamp(24px, 5vw, 72px);
+          padding: 0 clamp(24px, 5vw, 72px) clamp(90px, 14vh, 150px);
         }
         .hero-copy-stack {
           position: relative;
@@ -247,7 +247,7 @@ export default function Hero() {
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          pointer-events: none;
+          transition: opacity 0.9s ease, transform 0.9s ease;
         }
         .hero-heading {
           margin-top: 14px;
@@ -266,6 +266,9 @@ export default function Hero() {
           filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.9)) drop-shadow(0 6px 34px rgba(0, 0, 0, 0.75)) drop-shadow(0 0 46px rgba(255, 244, 214, 0.22));
           animation: hero-shine 5.5s ease-in-out infinite;
         }
+        .hero-heading--compact {
+          font-size: clamp(1.8rem, 2.1vw + 1.5vh, 3.25rem);
+        }
         @keyframes hero-shine {
           0% { background-position: 0% center; }
           45% { background-position: 100% center; }
@@ -273,6 +276,7 @@ export default function Hero() {
         }
         @media (prefers-reduced-motion: reduce) {
           .hero-heading { animation: none; }
+          .hero-video-bg { animation: none; }
         }
         .hero-cue {
           position: absolute;
@@ -284,20 +288,45 @@ export default function Hero() {
           color: var(--paper-dim);
           font-size: 0.8125rem;
           z-index: 3;
+          transition: opacity 0.4s ease;
         }
-        .hero-progress-track {
+        .hero-dots {
           position: absolute;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          height: 2px;
-          background: var(--line);
+          left: 50%;
+          bottom: 36px;
+          transform: translateX(-50%);
           z-index: 3;
+          display: flex;
+          align-items: center;
+          gap: 10px;
         }
-        .hero-progress-bar {
-          height: 100%;
+        .hero-dots button {
+          position: relative;
+          width: 30px;
+          height: 3px;
+          border-radius: 999px;
+          background: rgba(242, 239, 233, 0.28);
+          border: none;
+          padding: 0;
+          cursor: pointer;
+          overflow: hidden;
+        }
+        .hero-dots button.active { background: rgba(242, 239, 233, 0.28); }
+        .hero-dot-fill {
+          position: absolute;
+          inset: 0;
           width: 0%;
           background: var(--gold);
+          animation-name: hero-dot-fill;
+          animation-timing-function: linear;
+          animation-fill-mode: forwards;
+        }
+        @keyframes hero-dot-fill {
+          from { width: 0%; }
+          to { width: 100%; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .hero-dot-fill { animation: none; width: 100%; }
         }
 
         @media (max-width: 880px) {
@@ -321,6 +350,8 @@ export default function Hero() {
           .hero-chapter {
             align-items: center;
           }
+          .hero-dots { bottom: 24px; }
+          .hero-cue { display: none; }
         }
       `}</style>
     </section>

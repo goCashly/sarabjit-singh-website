@@ -3,7 +3,6 @@ import About from '@/components/About';
 import StatTicker from '@/components/StatTicker';
 import CloseProcess from '@/components/CloseProcess';
 import Specialties from '@/components/Specialties';
-import LoyaltyProgram from '@/components/LoyaltyProgram';
 import Faq from '@/components/Faq';
 import Reviews from '@/components/Reviews';
 import PullQuote from '@/components/PullQuote';
@@ -18,7 +17,6 @@ export default function Home() {
       <StatTicker />
       <CloseProcess />
       <Specialties />
-      <LoyaltyProgram />
       <Faq />
       <Reviews />
       <PullQuote />

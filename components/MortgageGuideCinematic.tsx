@@ -35,11 +35,11 @@ export default function MortgageGuideCinematic() {
         <CNTower>
           <div className="mg-hero-content">
             <Reveal>
-              <p className="eyebrow">{brand.name} / The mortgage guide</p>
+              <p className="eyebrow">{brand.name} / The Mortgage Guide</p>
               <h1 className="mg-h1">
-                Every path
+                Every Path
                 <br />
-                <em>to the keys.</em>
+                <em>to the Finance.</em>
               </h1>
               <p className="mg-hero-p">{brand.guideIntro}</p>
               <AnimatedButton href="#options" compact>
