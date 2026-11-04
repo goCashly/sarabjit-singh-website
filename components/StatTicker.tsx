@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { brand } from '@/lib/brand';
 
 function StatItem({
@@ -60,7 +60,14 @@ function StatItem({
           </sup>
         )}
       </div>
-      <p style={{ marginTop: 12, fontSize: '0.875rem', color: 'var(--steel)', lineHeight: 1.5 }}>{stat.label}</p>
+      <p style={{ marginTop: 12, fontSize: '0.875rem', color: 'var(--steel)', lineHeight: 1.5 }}>
+        {stat.label.split('\n').map((line, idx) => (
+          <Fragment key={idx}>
+            {idx > 0 && <br />}
+            {line}
+          </Fragment>
+        ))}
+      </p>
     </div>
   );
 }
@@ -86,7 +93,7 @@ export default function StatTicker() {
       <style>{`
         .stat-rail {
           display: grid;
-          grid-template-columns: repeat(3, 1fr);
+          grid-template-columns: repeat(4, 1fr);
         }
         .stat-glow {
           position: absolute;
@@ -102,6 +109,11 @@ export default function StatTicker() {
           height: 1px;
           background: var(--gold-dim);
           margin-bottom: 16px;
+        }
+        @media (max-width: 860px) and (min-width: 641px) {
+          .stat-rail { grid-template-columns: repeat(2, 1fr); row-gap: 28px; }
+          .stat-item:nth-child(odd) { border-left: none !important; }
+          .stat-item:nth-child(n + 3) { border-top: 1px solid var(--line); padding-top: 24px !important; }
         }
         @media (max-width: 640px) {
           .stat-rail { grid-template-columns: 1fr; }

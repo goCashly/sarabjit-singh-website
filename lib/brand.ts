@@ -6,7 +6,8 @@ export const brand = {
   title: 'Senior Mortgage Specialist',
   seoHeading: 'Sarabjit Singh — Senior Mortgage Specialist serving Mississauga, Oakville & the Greater Toronto Area',
   company: 'Mortgage Alliance',
-  credentialLine: "Chairman's Roundtable Award Recipient From 2015 · Top 1% Canada-wide",
+  credentialLine:
+    "Chairman's Roundtable Award Recipient From 2015 · Top 1% Canada-wide\nMultiple Award winner since 2009 including Platinum and Convention",
   license: 'Mortgage Lic. #M08004758',
   region: 'Mississauga, Oakville & the Greater Toronto Area, Ontario',
   officeAddress: 'Unit 1, 2483 Burnhamthorpe Rd W, Oakville, ON L6M 4H1',
@@ -23,6 +24,11 @@ export const brand = {
   entranceCue: 'SCROLL TO BEGIN',
 
   heroChapters: [
+    {
+      eyebrow: 'Senior Mortgage Specialist',
+      heading: 'A mortgage should fit',
+      body: 'like it was made for you.',
+    },
     {
       eyebrow: 'Senior Mortgage Specialist',
       heading: 'Sarabjit Singh',
@@ -43,11 +49,11 @@ export const brand = {
 
   aboutEyebrow: 'About Sarabjit Singh',
   aboutTagline: 'Let me help you get into the home where your story begins.',
-  aboutHeading: 'A mortgage should fit like it was made for you.',
+  aboutHeading: 'A mortgage should\nfit like it was made for you.',
   aboutIntro:
-    "It's the biggest purchase most people ever make. It deserves a plan built around your numbers, not a generic rate quote.",
+    "It's the biggest purchase most people ever make.\nIt deserves a plan built around your numbers, not a generic rate quote.",
   aboutBody:
-    'I compare banks, credit unions and private lenders on your behalf, explain every option in plain language, and stay with you from the first conversation to the day you get your keys. Then I check in again before renewal.',
+    'I compare banks, credit unions and private lenders on your behalf, explain every option in plain language, and stay with you from the first conversation to the day you get your keys.\nThen I check in again before renewal.',
 
   testimonial: {
     quote: 'Sarabjit is great at what he does. I recommend him strongly for all your mortgage needs.',
@@ -99,14 +105,19 @@ export const brand = {
 
   stats: [
     { value: '$4', unit: 'B+', label: 'Funded Residential & Commercial' },
-    { value: 'Top 1%', unit: '', label: "Chairman's Roundtable Award Recipient from 2015" },
+    {
+      value: 'Top 1%',
+      unit: '',
+      label: "Multiple Award winner since 2009 including Platinum and Convention\nChairman's Roundtable Award Recipient from 2015",
+    },
     { value: 'GTA', unit: '', label: 'Serving GTA and Surrounding Areas' },
+    { value: '10,000+', unit: '', label: 'Happy Clients Served' },
   ],
 
   processEyebrow: 'How it works',
-  processHeading: 'First call to keys, in four steps.',
+  processHeading: 'First call to keys, for your home or business.',
   processIntro:
-    'Every file starts the same way — a conversation about your goals, income and timeline. No credit check to start.',
+    'Every file starts the same way — a conversation about your goals, income and timeline.\nNo credit check to start.',
   process: [
     {
       index: '01',

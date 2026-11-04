@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { brand } from '@/lib/brand';
 import Reveal from './Reveal';
 
@@ -43,7 +44,12 @@ export default function About() {
             maxWidth: 700,
           }}
         >
-          {brand.aboutHeading}
+          {brand.aboutHeading.split('\n').map((line, idx) => (
+            <Fragment key={idx}>
+              {idx > 0 && <br />}
+              {line}
+            </Fragment>
+          ))}
         </p>
 
         <p
@@ -56,7 +62,12 @@ export default function About() {
             lineHeight: 1.7,
           }}
         >
-          {brand.aboutIntro}
+          {brand.aboutIntro.split('\n').map((line, idx) => (
+            <Fragment key={idx}>
+              {idx > 0 && <br />}
+              {idx === 0 ? <strong style={{ color: 'var(--paper)', fontWeight: 600 }}>{line}</strong> : line}
+            </Fragment>
+          ))}
         </p>
         <p
           style={{
@@ -67,7 +78,12 @@ export default function About() {
             lineHeight: 1.7,
           }}
         >
-          {brand.aboutBody}
+          {brand.aboutBody.split('\n').map((line, idx) => (
+            <Fragment key={idx}>
+              {idx > 0 && <br />}
+              {line}
+            </Fragment>
+          ))}
         </p>
       </Reveal>
 
@@ -114,7 +130,12 @@ export default function About() {
               color: 'var(--gold)',
             }}
           >
-            {brand.credentialLine}
+            {brand.credentialLine.split('\n').map((line, idx) => (
+              <Fragment key={idx}>
+                {idx > 0 && <br />}
+                {line}
+              </Fragment>
+            ))}
           </p>
           <p
             style={{

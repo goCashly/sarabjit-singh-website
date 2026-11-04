@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { brand } from '@/lib/brand';
 import Reveal from './Reveal';
@@ -27,10 +27,15 @@ function Intro() {
           </p>
           <span style={{ flex: 1, height: 1, background: 'var(--gold-dim)', opacity: 0.4 }} />
         </div>
-        <h2 className="pj-h2">
-          First call to keys, in <em>four steps.</em>
-        </h2>
-        <p className="pj-intro-p">{brand.processIntro}</p>
+        <h2 className="pj-h2">{brand.processHeading}</h2>
+        <p className="pj-intro-p">
+          {brand.processIntro.split('\n').map((line, idx) => (
+            <Fragment key={idx}>
+              {idx > 0 && <br />}
+              {line}
+            </Fragment>
+          ))}
+        </p>
       </Reveal>
     </div>
   );
@@ -404,10 +409,15 @@ export default function CloseProcess() {
                   </p>
                   <span style={{ flex: 1, height: 1, background: 'var(--gold-dim)', opacity: 0.4, maxWidth: 60 }} />
                 </div>
-                <h2 className="pj-h2">
-                  First call to keys, in <em>four steps.</em>
-                </h2>
-                <p className="pj-intro-p">{brand.processIntro}</p>
+                <h2 className="pj-h2">{brand.processHeading}</h2>
+                <p className="pj-intro-p">
+          {brand.processIntro.split('\n').map((line, idx) => (
+            <Fragment key={idx}>
+              {idx > 0 && <br />}
+              {line}
+            </Fragment>
+          ))}
+        </p>
               </div>
             </Reveal>
             <div className="pj-rule" />
