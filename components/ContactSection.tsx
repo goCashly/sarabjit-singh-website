@@ -112,13 +112,12 @@ export default function ContactSection() {
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
-    const payload = Object.fromEntries(new FormData(form).entries());
     setStatus('sending');
     try {
-      const res = await fetch('/api/contact', {
+      const res = await fetch(brand.contactFormEndpoint, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        headers: { Accept: 'application/json' },
+        body: new FormData(form),
       });
       if (!res.ok) throw new Error('failed');
       setStatus('sent');

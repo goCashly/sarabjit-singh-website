@@ -1,7 +1,6 @@
 export const brand = {
-  // TODO before launch: point this at the real production domain. Used for
-  // canonical URLs, Open Graph tags, the sitemap and JSON-LD.
-  siteUrl: 'https://www.sabbiesandhu.ca',
+  // Used for canonical URLs, Open Graph tags, the sitemap and JSON-LD.
+  siteUrl: 'https://sarabjitsingh.ca',
   name: 'Sarabjit Singh',
   fullName: 'Sarabjit Singh',
   title: 'Senior Mortgage Specialist',
@@ -400,6 +399,13 @@ export const brand = {
   contactEyebrow: "Let's talk",
   contactHeading: "Let's talk mortgages.",
   contactIntro: 'For press, partnerships, or a file that needs someone who picks up.',
+  // The site is statically exported for GitHub Pages, so the contact form posts directly
+  // to Formspree instead of a Next.js API route. Create a form at https://formspree.io
+  // and replace YOUR_FORM_ID below with the endpoint it gives you.
+  contactFormEndpoint: 'https://formspree.io/f/YOUR_FORM_ID',
+  // Same deal for the "Get Your Rates" quiz — can point at a second Formspree form
+  // (so rate-quote leads land separately from contact-form leads) or reuse the one above.
+  ratesFormEndpoint: 'https://formspree.io/f/YOUR_FORM_ID',
 
   pullQuote: {
     line: 'Always on top. Back for more!',

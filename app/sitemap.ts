@@ -4,6 +4,8 @@ import { posts } from '@/lib/posts';
 import { mortgageServices } from '@/lib/mortgageServices';
 import { serviceAreas } from '@/lib/serviceAreas';
 
+export const dynamic = 'force-static';
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
     '',

@@ -95,9 +95,9 @@ export default function GetRatesQuiz() {
     }
     setStatus('sending');
     try {
-      const res = await fetch('/api/get-rates', {
+      const res = await fetch(brand.ratesFormEndpoint, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify(answers),
       });
       if (!res.ok) throw new Error('failed');
